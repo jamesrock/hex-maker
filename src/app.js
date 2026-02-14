@@ -67,6 +67,7 @@ app.appendChild(output);
 // #FF7F00 // orange
 
 // #E00080 // pink
+// #E000C0 // pink
 
 // #00E0E0 // cyan
 
