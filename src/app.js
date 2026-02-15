@@ -11,6 +11,23 @@ import {
 } from '@jamesrock/rockjs';
 
 const app = document.querySelector('#app');
+const defaultFaves = [
+  ['#C00000', 'red'],
+  ['#A00000', 'red'],
+  ['#007000', 'green'],
+  ['#0000C0', 'blue'],
+  ['#8000C0', 'purple'],
+  ['#800080', 'purple'],
+  ['#F06040', 'orange'],
+  ['#FF7F00', 'orange'],
+  ['#F08800', 'orange'],
+  ['#E00080', 'pink'],
+  ['#E000C0', 'pink'],
+  ['#00E0E0', 'cyan'],
+  ['#E0FF00', 'yellow'],
+  ['#FFFF00', 'yellow'],
+  ['#F8E3E5', 'lavender blush'],
+];
 
 class ColorMixer extends DisplayObject {
   constructor() {
@@ -53,7 +70,27 @@ class ColorMixer extends DisplayObject {
     node.appendChild(collections);
     node.appendChild(foot);
 
+    faveBtn.addEventListener('click', () => {
+      
+      this.addToFaves();
+
+    });
+
+    clearBtn.addEventListener('click', () => {
+      
+      this.switches.forEach((collection) => {
+        collection.forEach(($switch) => {
+          $switch.dataset.active = 'N';
+        });
+      });
+      this.calculate();
+
+    });
+
     this.calculate();
+    this.getFaves();
+
+    console.log(this.faves);
 
   };
   calculate() {
@@ -82,24 +119,16 @@ class ColorMixer extends DisplayObject {
     return this;
 
   };
+  getFaves() {
+
+    const faves = this.storage.get('faves') || defaultFaves;
+    this.faves = faves;
+    return this;
+
+  };
   hexMap = makeHexMap();
   bits = makeBitArray(8);
-  faves = [
-    ['#C00000', 'red'],
-    ['#A00000', 'red'],
-    ['#007000', 'green'],
-    ['#0000C0', 'blue'],
-    ['#8000C0', 'purple'],
-    ['#800080', 'purple'],
-    ['#F06040', 'orange'],
-    ['#FF7F00', 'orange'],
-    ['#E00080', 'pink'],
-    ['#E000C0', 'pink'],
-    ['#00E0E0', 'cyan'],
-    ['#E0FF00', 'yellow'],
-    ['#FFFF00', 'yellow'],
-    ['#F8E3E5', 'lavender blush'],
-  ];
+  faves = [];
 };
 
 const mixer = new ColorMixer();
