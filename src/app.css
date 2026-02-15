@@ -34,7 +34,11 @@
 }
 
 :root {
-  --gap: 7px;
+  --switch-size: 50px;
+  --switch-size-offset: 51px;
+  --switch-gap: 4px;
+  --swatch-size: 25px;
+  --swatch-gap: 2px;
 }
 
 * {
@@ -62,25 +66,27 @@ body {
   background-color: white;
   padding: 15px;
   border-radius: 10px;
+  max-width: 430px;
 }
 
 .colors {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  gap: var(--gap);
+  gap: var(--switch-gap);
   -webkit-user-select: none;
   user-select: none;
 }
 
 .color {
   display: flex;
-  gap: var(--gap);
+  gap: var(--switch-gap);
+  flex-wrap: wrap;
 }
 
 .switch {
-  width: 50px;
-  height: 50px;
+  width: var(--switch-size);
+  height: var(--switch-size);
   background-color: var(--color);
   color: white;
   display: flex;
@@ -91,11 +97,20 @@ body {
   cursor: pointer;
   border-radius: 8px;
   transition: all .2s;
+
+  &:first-child,
+  &:last-child {
+    width: var(--switch-size-offset);
+  }
   
   &[data-active="Y"] {
     color: var(--color);
   }
 
+}
+
+.output-wrap {
+  position: relative;
 }
 
 .output {
@@ -105,13 +120,14 @@ body {
   font-family: monospace;
 }
 
-.color-mixer-foot {
+.foot {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
-button {
+button:not(.copy) {
   border: 0;
   background-color: #F000C0;
   color: white;
@@ -122,16 +138,55 @@ button {
   cursor: pointer;
 }
 
+button.copy {
+  position: absolute;
+  right: -28px;
+  top: 8px;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+
+  .toast {
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    font-size: 16px;
+    background-color: white;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    font-weight: 500;
+  }
+
+  &[data-state="default"] {
+    
+    .active,
+    .toast {
+      display: none;
+    }
+
+  }
+
+  &[data-state="copied"] {
+
+    .inactive {
+      display: none;
+    }
+
+  }
+
+}
+
 .swatches {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px;
-  max-width: 449px;
+  gap: var(--swatch-gap);
 
   .swatch {
     cursor: pointer;
-    width: 20px;
-    height: 20px;
+    width: var(--swatch-size);
+    height: var(--swatch-size);
   }
 
 }

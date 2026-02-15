@@ -10,6 +10,7 @@ import {
   createButton,
   empty
 } from '@jamesrock/rockjs';
+import { icons } from './icons';
 
 const app = document.querySelector('#app');
 const defaultFaves = [
@@ -59,12 +60,17 @@ class ColorMixer extends DisplayObject {
     super();
 
     const node = this.node = createContainer('color-mixer');
+    const outputWrap = createContainer('output-wrap');
     const output = this.output = createContainer('output');
     const swatches = this.swatches = createContainer('swatches');
     const collections = createContainer('colors');
-    const foot = createContainer('color-mixer-foot');
+    const foot = createContainer('foot');
     const faveBtn = createButton('fave');
     const clearBtn = createButton('clear');
+    const copyBtn = createButton('copy', 'copy');
+
+    copyBtn.innerHTML = `${icons['copy-inactive']}${icons['copy-active']}<span class="toast">copied!</span>`;
+    copyBtn.dataset.state = 'default';
 
     const switches = this.switches = makeArray(this.colors.length, () => []);
 
@@ -87,8 +93,11 @@ class ColorMixer extends DisplayObject {
     });
 
     foot.appendChild(faveBtn);
-    foot.appendChild(output);
+    foot.appendChild(outputWrap);
     foot.appendChild(clearBtn);
+    
+    outputWrap.appendChild(output);
+    outputWrap.appendChild(copyBtn);
 
     node.appendChild(collections);
     node.appendChild(foot);
@@ -106,8 +115,12 @@ class ColorMixer extends DisplayObject {
 
     });
 
-    output.addEventListener('click', () => {
+    copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(this.code);
+      copyBtn.dataset.state = 'copied';
+      setTimeout(() => {
+        copyBtn.dataset.state = 'default';
+      }, 1500);
     });
 
     this.calculate();
@@ -202,3 +215,19 @@ class ColorMixer extends DisplayObject {
 
 const mixer = window.mixer = new ColorMixer();
 mixer.appendTo(app);
+
+const swatchSize = 25;
+const swatchGap = 2;
+const swatchesPerRow = 16;
+
+const switchSize = 50;
+const switchGap = 4;
+const switchesPerRow = 8;
+
+// document.documentElement.style.setProperty('--swatch-size', `${swatchSize}px`);
+// document.documentElement.style.setProperty('--swatch-gap', `${swatchGap}px`);
+// document.documentElement.style.setProperty('--switch-size', `${switchSize}px`);
+// document.documentElement.style.setProperty('--switch-gap', `${switchGap}px`);
+
+console.log(swatchSize * swatchesPerRow + (swatchGap * (swatchesPerRow-1)));
+console.log(switchSize * switchesPerRow) + (switchGap * (switchesPerRow-1));
