@@ -1,3 +1,3 @@
-# color mixer
+# HexMaker
 
 simplified colour mixer
