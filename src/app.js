@@ -2,6 +2,7 @@ import './app.css';
 import {
   Storage,
   DisplayObject,
+  setDocumentHeight,
   makeBitArray,
   makeHexMap,
   makeArray,
@@ -10,6 +11,8 @@ import {
   createButton,
   empty
 } from '@jamesrock/rockjs';
+
+setDocumentHeight();
 
 const app = document.querySelector('#app');
 const defaultFaves = [
